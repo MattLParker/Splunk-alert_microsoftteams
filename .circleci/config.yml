@@ -14,7 +14,7 @@ jobs:
             mkdir ~/circleci_app
             mkdir ~/package
       - checkout:
-          path: ~/circleci_app
+          path: ~/circleci_app/
 
       - run:
           name: remove unpackaged files
@@ -47,7 +47,7 @@ jobs:
       - run:
           name: package app
           command: |
-            slim package -o ~/package/ ~/circleci_app
+            slim package -o ~/package/ ~/circleci_app/alert_microsoftteams
             echo "export PACKAGE_FILE=`ls ~/package/circleci_app-*.tar.gz`" >> $BASH_ENV
       - store_artifacts:
           path: ~/package
