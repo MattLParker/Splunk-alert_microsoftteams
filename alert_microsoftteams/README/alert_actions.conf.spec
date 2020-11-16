@@ -1,0 +1,2 @@
+[alertmsteams]
+*nothing to configure
