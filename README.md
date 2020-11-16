@@ -1,4 +1,4 @@
-[![<MattLParker>](https://circleci.com/gh/MattLParker/Splunk-alert_microsoftteams.svg?style=svg)](<LINK>)
+[![<MattLParker>](https://circleci.com/gh/MattLParker/Splunk-alert_microsoftteams.svg?style=svg)]
 
 # Splunk-alert_microsoftteams
 Splunk App to send notifications to Microsoft Teams
