@@ -11,6 +11,7 @@ def send_webhook_request(url, body, user_agent=None):
         print("ERROR No URL provided", file=sys.stderr)
         return False
     print("INFO Sending POST request to url=%s with size=%d bytes payload" % (url, len(body)), file=sys.stderr)
+    print(body, file=sys.stderr)
     print("DEBUG Body: %s" % body, file=sys.stderr)
     try:
         res = requests.post(url, headers={"Content-Type": "application/json", "User-Agent": 'user_agent'}, data=body)
@@ -35,26 +36,70 @@ if __name__ == "__main__":
         settings = json.loads(sys.stdin.read())
         print("DEBUG Settings: %s" % settings, file=sys.stderr)
         url = settings['configuration'].get('url')
+        if  settings['configuration'].get('actionurl'):
+            actionurlkey = settings['configuration'].get('actionurl')
+        if  settings['configuration'].get('actionname'):    
+            actionname = settings['configuration'].get('actionname')
+        try:
+            actionurlkey
+        except NameError:
+            actionurlkey = None
         facts = []
         for key,value in list(settings.get('result').items()):
-            facts.append({"name":key, "value":value})
-        body = OrderedDict(
-            summary=settings.get('search_name') + " was triggered",
-            title=settings.get('search_name'),
-            sections=[
-                {"activityTitle": settings.get("search_name") + " was triggered"},
-                {
-                    "title": "Details",
-                    "facts": facts
-                }
-            ],
-            potentialAction=[{
-                "@context":"http://schema.org",
-                "@type":"ViewAction",
-                "name":"View in Splunk",
-                "target":[settings.get('results_link')]
-                }]
-        )
+            if actionurlkey != None:
+                if key != actionurlkey:
+                    facts.append({"name":key, "value":value})
+                elif key == actionurlkey:
+                    actionurl = value
+            else:
+                facts.append({"name":key, "value":value})
+        try:
+            actionurl
+        except NameError:
+            actionurl = None
+        if actionurl != None:
+            body = OrderedDict(
+                summary=settings.get('search_name') + " was triggered",
+                title=settings.get('search_name'),
+                sections=[
+                    {"activityTitle": settings.get("search_name") + " was triggered"},
+                    {
+                        "title": "Details",
+                        "markdown": "false",
+                        "facts": facts
+                    }
+                ],
+                potentialAction=[{
+                    "@context":"http://schema.org",
+                    "@type":"ViewAction",
+                    "name":"View in Splunk",
+                    "target":[settings.get('results_link')]
+                    },{
+                    "@context":"http://schema.org",
+                    "@type":"ViewAction",
+                    "name":actionname,
+                    "target":[actionurl]
+                    }]
+            )
+        else:
+            body = OrderedDict(
+                summary=settings.get('search_name') + " was triggered",
+                title=settings.get('search_name'),
+                sections=[
+                    {"activityTitle": settings.get("search_name") + " was triggered"},
+                    {
+                        "title": "Details",
+                        "markdown": "false",
+                        "facts": facts
+                    }
+                ],
+                potentialAction=[{
+                    "@context":"http://schema.org",
+                    "@type":"ViewAction",
+                    "name":actionname,
+                    "target":[settings.get('results_link')]
+                    }]
+            )
         user_agent = settings['configuration'].get('user_agent', 'Splunk')
         if not send_webhook_request(url, json.dumps(body), user_agent=user_agent):
             sys.exit(2)

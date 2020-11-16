@@ -1,10 +1,23 @@
 <form class="form-horizontal form-complex">
     <div class="control-group">
-        <label class="control-label" for="teams_url">Webhook URL</label>
-
+        <label class="control-label" for="teams_url">Webhook URL*</label>
         <div class="controls">
             <input type="text" name="action.alertmsteams.param.url" id="teams_url" />
             <span class="help-block">Enter the Webhook Connector URL for the channel</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="teams_actionurl">Action URL</label>
+        <div class="controls">
+            <input type="text" name="action.alertmsteams.param.actionurl" id="teams_actionurl" />
+            <span class="help-block">Enter the table field name for action url</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="teams_actionname">Action URL Button Name</label>
+        <div class="controls">
+            <input type="text" name="action.alertmsteams.param.actionname" id="teams_actionname" />
+            <span class="help-block">Enter the name for action button</span>
         </div>
     </div>
 </form>
