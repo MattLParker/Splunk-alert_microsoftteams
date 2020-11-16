@@ -82,9 +82,7 @@ jobs:
           path: ~/circleci_appinspect_cloud.json
 
 orbs:
-  slack: circleci/slack@3.4.2
-  signalfx: kikeyama/signalfx@0.1.1
-  splunk: kikeyama/splunk@0.1.0
+
 
 workflows:
   main:
