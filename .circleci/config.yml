@@ -48,7 +48,7 @@ jobs:
           name: package app
           command: |
             slim package -o ~/package/ ~/circleci_app/alert_microsoftteams
-            echo "export PACKAGE_FILE=`ls ~/package/circleci_app-*.tar.gz`" >> $BASH_ENV
+            echo "export PACKAGE_FILE=`ls ~/package/*.tar.gz`" >> $BASH_ENV
       - store_artifacts:
           path: ~/package
 
