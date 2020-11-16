@@ -88,13 +88,3 @@ workflows:
   main:
     jobs:
       - validate_package_appinspect
-      - splunk/workflow-event:
-          subject: notificatoin from main workflow
-          message: Successfully finisheed deploying to my cluster
-          splunk_hec_host: '${SPLUNK_HEC_HOST}'
-          splunk_hec_port: 8088
-          splunk_hec_protocol: http
-          splunk_hec_token: '${SPLUNK_HEC_TOKEN}'
-          splunk_index: circleci
-          requires:
-            - validate_package_appinspect
