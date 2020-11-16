@@ -43,7 +43,7 @@ jobs:
       - run:
           name: validate app
           command: |
-            slim validate ~/circleci_app
+            slim validate ~/circleci_app/alert_microsoftteams
       - run:
           name: package app
           command: |
