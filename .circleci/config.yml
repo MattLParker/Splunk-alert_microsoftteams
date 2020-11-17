@@ -72,13 +72,12 @@ jobs:
       - run:
           name: submit an app cloud validation
           command: |
-            curl -X POST \
+          echo "export APPINSPECT_REPORT=`curl -X POST \
             -H "Authorization: bearer $APPINSPECT_TOKEN" \
             -H "Cache-Control: no-cache" \
             -F "app_package=@\"$PACKAGE_FILE\"" \
             -F "included_tags=cloud" \
-            --url "https://appinspect.splunk.com/v1/app/validate" > ~/circleci_appinspect_cloud.json
-            echo "export APPINSPECT_REPORT=`echo ~/circleci_appinspect_cloud.json | jq \".request_id\"`" >> $BASH_ENV
+            --url "https://appinspect.splunk.com/v1/app/validate" | jq \".request_id\"`" >> $BASH_ENV
       - store_artifacts:
           path: ~/circleci_appinspect_cloud.json
 
