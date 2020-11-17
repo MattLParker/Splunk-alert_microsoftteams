@@ -72,7 +72,7 @@ jobs:
       - run:
           name: submit an app cloud validation
           command: |
-          echo "export APPINSPECT_REPORT=`curl -X POST \
+            echo "export APPINSPECT_REPORT=`curl -X POST \
             -H "Authorization: bearer $APPINSPECT_TOKEN" \
             -H "Cache-Control: no-cache" \
             -F "app_package=@\"$PACKAGE_FILE\"" \
