@@ -95,12 +95,12 @@ jobs:
           path: ~/cloudreport.json      
 
       - run:
-        name: submit an app cloud validation
-        command: |
-          curl -X GET \
-          -H "Authorization: bearer $APPINSPECT_TOKEN" \
-          -H "Cache-Control: no-cache" \
-          --url "https://appinspect.splunk.com/v1/app/report/$APPINSPECT_REPORT" > ~/report.json
+          name: Get an app report
+          command: |
+            curl -X GET \
+            -H "Authorization: bearer $APPINSPECT_TOKEN" \
+            -H "Cache-Control: no-cache" \
+            --url "https://appinspect.splunk.com/v1/app/report/$APPINSPECT_REPORT" > ~/report.json
       - store_artifacts:
           path: ~/report.json
 orbs:
