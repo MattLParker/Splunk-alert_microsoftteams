@@ -78,6 +78,7 @@ jobs:
             -F "app_package=@\"$PACKAGE_FILE\"" \
             -F "included_tags=cloud" \
             --url "https://appinspect.splunk.com/v1/app/validate" > ~/circleci_appinspect_cloud.json
+            echo "export APPINSPECT_REPORT=`echo ~/circleci_appinspect_cloud.json | jq \".request_id\"`" >> $BASH_ENV
       - store_artifacts:
           path: ~/circleci_appinspect_cloud.json
 
@@ -92,7 +93,7 @@ jobs:
             curl -X GET \
             -H "Authorization: bearer $APPINSPECT_TOKEN" \
             -H "Cache-Control: no-cache" \
-            --url "https://appinspect.splunk.com/v1/app/report/" > ~/report.json
+            --url "https://appinspect.splunk.com/v1/app/report/$APPINSPECT_REPORT" > ~/report.json
       - store_artifacts:
           path: ~/report.json      
 orbs:
