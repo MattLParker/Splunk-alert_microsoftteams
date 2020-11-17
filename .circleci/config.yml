@@ -61,25 +61,23 @@ jobs:
       - run:
           name: submit an app validation
           command: |
-            curl -X POST \
+            echo "export APPINSPECT_REPORT=`curl -X POST \
             -H "Authorization: bearer $APPINSPECT_TOKEN" \
             -H "Cache-Control: no-cache" \
             -F "app_package=@\"$PACKAGE_FILE\"" \
-            --url "https://appinspect.splunk.com/v1/app/validate" > ~/circleci_appinspect.json
+            --url "https://appinspect.splunk.com/v1/app/validate" | jq \".request_id\"`" >> $BASH_ENV
       - store_artifacts:
           path: ~/circleci_appinspect.json
 
       - run:
           name: submit an app cloud validation
           command: |
-            echo "export APPINSPECT_REPORT=`curl -X POST \
+            echo "export APPINSPECT_CLOUDREPORT=`curl -X POST \
             -H "Authorization: bearer $APPINSPECT_TOKEN" \
             -H "Cache-Control: no-cache" \
             -F "app_package=@\"$PACKAGE_FILE\"" \
             -F "included_tags=cloud" \
             --url "https://appinspect.splunk.com/v1/app/validate" | jq \".request_id\"`" >> $BASH_ENV
-      - store_artifacts:
-          path: ~/circleci_appinspect_cloud.json
 
       - run:
           name: Sleep for 5 Minutes
@@ -87,14 +85,24 @@ jobs:
             sleep 5m
 
       - run:
-          name: submit an app cloud validation
+          name: Get an app cloud report
           command: |
             curl -X GET \
             -H "Authorization: bearer $APPINSPECT_TOKEN" \
             -H "Cache-Control: no-cache" \
-            --url "https://appinspect.splunk.com/v1/app/report/$APPINSPECT_REPORT" > ~/report.json
+            --url "https://appinspect.splunk.com/v1/app/report/$APPINSPECT_CLOUDREPORT" > ~/cloudreport.json
       - store_artifacts:
-          path: ~/report.json      
+          path: ~/cloudreport.json      
+
+      - run:
+        name: submit an app cloud validation
+        command: |
+          curl -X GET \
+          -H "Authorization: bearer $APPINSPECT_TOKEN" \
+          -H "Cache-Control: no-cache" \
+          --url "https://appinspect.splunk.com/v1/app/report/$APPINSPECT_REPORT" > ~/report.json
+      - store_artifacts:
+          path: ~/report.json
 orbs:
 
 
