@@ -57,7 +57,7 @@ if __name__ == "__main__":
             actionurl
         except NameError:
             actionurl = None
-        if actionurl != None:
+        if actionurl:
             body = OrderedDict(
                 summary=settings.get('search_name') + " was triggered",
                 title=settings.get('search_name'),
@@ -96,7 +96,7 @@ if __name__ == "__main__":
                 potentialAction=[{
                     "@context":"http://schema.org",
                     "@type":"ViewAction",
-                    "name":actionname,
+                    "name":"View in Splunk",
                     "target":[settings.get('results_link')]
                     }]
             )
