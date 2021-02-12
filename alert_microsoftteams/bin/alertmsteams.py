@@ -48,11 +48,11 @@ if __name__ == "__main__":
         for key,value in list(settings.get('result').items()):
             if actionurlkey != None:
                 if key != actionurlkey:
-                    facts.append({"name":key, "value":value})
+                    facts.append({"name":key, "value":str(value)})
                 elif key == actionurlkey:
                     actionurl = value
             else:
-                facts.append({"name":key, "value":value})
+                facts.append({"name":key, "value":str(value)})
         try:
             actionurl
         except NameError:
