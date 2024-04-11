@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Run AppInspect
-        run: splunk-appinspect inspect testing_app --output-file appinspect_result.json --mode precert
+        run: splunk-appinspect inspect alert_microsoftteams --output-file appinspect_result.json --mode precert
 
       - name: Upload AppInspect Results
         uses: actions/upload-artifact@v2
