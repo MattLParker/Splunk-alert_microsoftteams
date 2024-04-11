@@ -26,8 +26,7 @@ jobs:
           path: appinspect_result.json
 
       - name: Package
-        run: mkdir build
-        run: tar cfvz build/alert_microsoftteams.tgz alert_microsoftteams
+        run: mkdir build && tar cfvz build/alert_microsoftteams.tgz alert_microsoftteams
 
       - name: Upload package
         uses: actions/upload-artifact@v2
