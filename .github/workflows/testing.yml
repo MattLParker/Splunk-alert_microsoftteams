@@ -26,7 +26,7 @@ jobs:
           path: appinspect_result.json
 
       - name: Package
-        run: mkdir build && tar cfvz build/alert_microsoftteams.tgz --mode 660 alert_microsoftteams
+        run: mkdir build && find alert_microsoftteams -type d -exec chmod 775 {} \; && find alert_microsoftteams -type f -exec chmod 644 {} \; && tar cfvz build/alert_microsoftteams.tgz alert_microsoftteams
 
       - name: Upload package
         uses: actions/upload-artifact@v2
