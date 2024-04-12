@@ -1,0 +1,36 @@
+name: Test and Build
+
+on:
+  pull_request:
+    branches:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  appinspect:
+    runs-on: ubuntu-latest
+    container: ghcr.io/ermontross/appinspect:latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run AppInspect
+        run: splunk-appinspect inspect alert_microsoftteams --output-file appinspect_result.json --mode precert --included-tags cloud
+
+      - name: Upload AppInspect Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: appinspect
+          path: appinspect_result.json
+
+      - name: Package
+        run: mkdir build && cd alert_microsoftteams && tar cfvz --no-acls ../build/alert_microsoftteams.tgz *
+
+      - name: Upload package
+        uses: actions/upload-artifact@v2
+        with:
+          name: alert_microsoftteams
+          path: build/alert_microsoftteams.tgz
+          
