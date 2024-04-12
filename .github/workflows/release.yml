@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  appinspect:
+    runs-on: ubuntu-latest
+    container: ghcr.io/ermontross/appinspect:latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run AppInspect
+        run: splunk-appinspect inspect alert_microsoftteams --output-file appinspect_result.json --mode precert --included-tags cloud
+
+      - name: Upload AppInspect Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: appinspect
+          path: appinspect_result.json
+
+      - name: Package
+        run: mkdir build && cd alert_microsoftteams && tar cfvz ../build/alert_microsoftteams.tgz --no-acls *
+
+      - name: Upload package
+        uses: actions/upload-artifact@v2
+        with:
+          name: alert_microsoftteams
+          path: build/alert_microsoftteams.tgz
+
+      - name: version
+        run:  grep 'version' ./alert_microsoftteams/default/app.conf|sed 's/version = //'
+        id: version
+      
+      - name: release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ steps.version.outputs.version }}
+          tag_name: ${{ steps.version.outputs.version }}
+          body_path: CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      
+      - name: upload linux artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/alert_microsoftteams.tgz
+          asset_name: alert_microsoftteams.tgz
+          asset_content_type: application/gzip
