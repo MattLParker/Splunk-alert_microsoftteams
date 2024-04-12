@@ -32,7 +32,7 @@ jobs:
           path: build/alert_microsoftteams.tgz
 
       - name: version
-        run:  grep 'version' ./alert_microsoftteams/default/app.conf|sed 's/version = //'
+        run:  echo $(grep 'version' ./alert_microsoftteams/default/app.conf|sed 's/version = //')
         id: version
       
       - name: release
