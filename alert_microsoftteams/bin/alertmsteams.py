@@ -9,7 +9,10 @@ from collections import OrderedDict
 def send_webhook_request(url, body, user_agent=None):
     if url is None:
         print("ERROR No URL provided", file=sys.stderr)
-        return False
+        exit(1)
+    elif not url.startswith("https"):
+        print("ERROR Not a TLS webhook - INSECURE", file=sys.stderr)
+        exit(1)
     print("INFO Sending POST request to url=%s with size=%d bytes payload" % (url, len(body)), file=sys.stderr)
     print(body, file=sys.stderr)
     print("DEBUG Body: %s" % body, file=sys.stderr)
