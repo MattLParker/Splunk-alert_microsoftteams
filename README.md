@@ -1,5 +1,8 @@
 [![<MattLParker>](https://circleci.com/gh/MattLParker/Splunk-alert_microsoftteams.svg?style=svg)](https://circleci.com/gh/MattLParker/Splunk-alert_microsoftteams)
 
+Archiving for now, check out  https://github.com/guilhemmarchand/TA-ms-teams-alert-action , This is a far more advanced version of what I was setting out to do.
+
+
 # Splunk-alert_microsoftteams
 Splunk App to send notifications to Microsoft Teams
 Custom alert action to send messages to Microsoft Teams. 
